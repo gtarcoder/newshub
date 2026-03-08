@@ -1,0 +1,109 @@
+# ============================================================
+# NewsHub 配置文件
+# layer: breaking(快讯) | deep(深度) | tech(科技) | ideas(思想) | default(综合)
+# ============================================================
+
+sources:
+  # --- 综合层 (default) ---
+  rss:
+    enabled: true
+    feeds:
+      - name: "36氪"
+        url: "https://36kr.com/feed"
+      - name: "少数派"
+        url: "https://sspai.com/feed"
+      # --- 快讯层 ---
+      - name: "POLITICO"
+        url: "https://rss.politico.com/politics.xml"
+        layer: breaking
+      # --- 深度层 ---
+      - name: "Economist"
+        url: "https://www.economist.com/the-world-this-week/rss.xml"
+        layer: deep
+      - name: "Economist Briefing"
+        url: "https://www.economist.com/briefing/rss.xml"
+        layer: deep
+      - name: "FT World"
+        url: "https://www.ft.com/world?format=rss"
+        layer: deep
+      - name: "Foreign Affairs"
+        url: "https://www.foreignaffairs.com/rss.xml"
+        layer: deep
+      # --- 科技层 ---
+      - name: "MIT Tech Review"
+        url: "https://www.technologyreview.com/feed/"
+        layer: tech
+      - name: "MIT News"
+        url: "https://news.mit.edu/rss/feed"
+        layer: tech
+      # --- 思想层 ---
+      - name: "Aeon"
+        url: "https://aeon.co/feed.rss"
+        layer: ideas
+
+  newsapi:
+    enabled: false
+    api_key: "${NEWSAPI_KEY}"
+    country: "us"
+    page_size: 20
+
+  zhihu:
+    enabled: true
+    # cookie: ""
+
+  hackernews:
+    enabled: true
+    top_n: 30
+
+  # --- 专用 Fetcher ---
+  wallstreetcn:
+    enabled: true
+    layer: breaking
+    limit: 50
+
+  reuters:
+    enabled: true
+    layer: breaking
+    sections: ["world", "business", "technology"]
+
+  caixin:
+    enabled: true
+    layer: deep
+
+# 分层配置：每层有自己的推送标题、调度频率和 Top N
+layers:
+  breaking:
+    label: "快讯热点"
+    top_n: 15
+    schedule: "0 8,12,18 * * *"
+  deep:
+    label: "深度解读"
+    top_n: 10
+    schedule: "0 9 * * *"
+  tech:
+    label: "科技前沿"
+    top_n: 10
+    schedule: "0 8,18 * * *"
+  ideas:
+    label: "思想精选"
+    top_n: 5
+    schedule: "0 10 * * 1"
+  default:
+    label: "综合热点"
+    top_n: 10
+    schedule: "0 8,12,18 * * *"
+
+ranking:
+  top_n: 10
+  dedup: true
+
+push:
+  wechat:
+    enabled: false
+    key: "${SERVERCHAN_KEY}"
+  feishu:
+    enabled: false
+    webhook_url: "${FEISHU_WEBHOOK_URL}"
+
+schedule:
+  timezone: "Asia/Shanghai"
